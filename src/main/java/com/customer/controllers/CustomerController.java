@@ -2,16 +2,13 @@ package com.customer.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.customer.models.clients.CustomerDTO;
-import com.customer.respositories.CustomerService;
+import com.customer.models.dto.CustomerDTO;
+import com.customer.services.CustomerService;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,8 +23,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping(path = "/customers")
 public class CustomerController {
 
-	@Autowired
-	private CustomerService customerService;
+	private final CustomerService customerService;
+	
+	public CustomerController(CustomerService service)
+	{
+		customerService = service;
+	}
 	
 	@GetMapping
 	public ResponseEntity<List<CustomerDTO>> getCustomers(
@@ -51,14 +52,15 @@ public class CustomerController {
 	@PostMapping
 	public ResponseEntity<CustomerDTO> createCustomer( @Valid @RequestBody CustomerDTO customer) throws Exception
 	{
-		customerService.addCustomer(customer);	
-		return new ResponseEntity<CustomerDTO>(customer, HttpStatus.OK);
+		CustomerDTO customerDTO= customerService.addCustomer(customer);	
+		return new ResponseEntity<CustomerDTO>(customerDTO, HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping(path = "/{id}")
-	public void deleteCustomer(@RequestBody String customerId)
+	public ResponseEntity<Void> deleteCustomer(@PathVariable String id)
 	{
-		customerService.deleteById(customerId);
+		customerService.deleteById(id);
+		return ResponseEntity.noContent().build();
 	}
 
 }

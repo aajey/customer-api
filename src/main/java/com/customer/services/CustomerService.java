@@ -19,55 +19,46 @@ public class CustomerService {
 
 	@Autowired
 	private CustomerRepository customerRepository;
-	
+
 	@Autowired
 	private ModelMapper modelMapper;
-	
-	
-	public List<CustomerDTO> getAllCustomers(String firstname, String lastname, String email, String street, String city, String state, String country)
-	{
-		List<CustomerDocument> customers = new ArrayList<>();	
+
+	public List<CustomerDTO> getAllCustomers(String firstname, String lastname, String email, String street,
+			String city, String state, String country) {
+		List<CustomerDocument> customers = new ArrayList<>();
 		customerRepository
-		.findByFirstnameAndLastnameAndEmailAndAddressStreetAndAddressCityAndAddressStateAndAddressCountry(firstname, lastname, email, street, city, state, country)
-		.forEach(customers::add);
-		return customers.stream().map(c ->convertToUserModel(c)).collect(Collectors.toList());	
+				.findByFirstnameAndLastnameAndEmailAndAddressStreetAndAddressCityAndAddressStateAndAddressCountry(
+						firstname, lastname, email, street, city, state, country)
+				.forEach(customers::add);
+		return customers.stream().map(c -> convertToUserModel(c)).collect(Collectors.toList());
 	}
 
-	public CustomerDTO addCustomer(CustomerDTO customerDto)
-	{
+	public CustomerDTO addCustomer(CustomerDTO customerDto) {
 		CustomerDocument customerDoc = convertToSolrModel(customerDto);
-		customerRepository.save(customerDoc);		
-		return convertToUserModel(customerDoc);		
+		customerRepository.save(customerDoc);
+		return convertToUserModel(customerDoc);
 	}
-	
-	public CustomerDTO getCustomerById(String id)
-	{
+
+	public CustomerDTO getCustomerById(String id) {
 		Optional<CustomerDocument> opt = customerRepository.findById(id);
-		if( opt.isPresent())
-		{
+		if (opt.isPresent()) {
 			return convertToUserModel(opt.get());
-		}
-		else
-		{
+		} else {
 			return null;
-		}		
+		}
 	}
-	
-	public void deleteById(String id)
-	{
-		customerRepository.deleteById(id);		
+
+	public void deleteById(String id) {
+		customerRepository.deleteById(id);
 	}
-	
-	private CustomerDTO convertToUserModel(CustomerDocument c)
-	{
+
+	private CustomerDTO convertToUserModel(CustomerDocument c) {
 		return modelMapper.map(c, CustomerDTO.class);
 	}
-	
-	private CustomerDocument convertToSolrModel(CustomerDTO c)
-	{	
+
+	private CustomerDocument convertToSolrModel(CustomerDTO c) {
 		CustomerDocument customer = modelMapper.map(c, CustomerDocument.class);
-		customer.setId(UUID.randomUUID().toString());		
+		customer.setId(UUID.randomUUID().toString());
 		return customer;
 	}
 }
-

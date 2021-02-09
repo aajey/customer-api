@@ -21,10 +21,10 @@ public class CustomerDocument {
 
 	@Indexed(name = "addressStreet", type = "String")
 	private String addressStreet;
-	
+
 	@Indexed(name = "addressCountry", type = "String")
 	private String addressCountry;
-	
+
 	@Indexed(name = "addressState", type = "String")
 	private String addressState;
 

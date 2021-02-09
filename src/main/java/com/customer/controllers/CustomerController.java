@@ -24,41 +24,38 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class CustomerController {
 
 	private final CustomerService customerService;
-	
-	public CustomerController(CustomerService service)
-	{
+
+	public CustomerController(CustomerService service) {
 		customerService = service;
 	}
-	
+
 	@GetMapping
 	public ResponseEntity<List<CustomerDTO>> getCustomers(
-			@RequestParam(value="firstname", defaultValue = "*") String firstname,
-			@RequestParam(value= "lastname", defaultValue= "*") String lastname,
-			@RequestParam(value= "email", defaultValue="*") String email,
-			@RequestParam(value= "street", defaultValue="*") String street,
-			@RequestParam(value= "city", defaultValue="*") String city,
-			@RequestParam(value= "state", defaultValue="*") String state,
-			@RequestParam(value= "country", defaultValue="*") String country
-			) {		
-		return new ResponseEntity<List<CustomerDTO>>(customerService.getAllCustomers(firstname, lastname, email, street, city, state, country), HttpStatus.OK);
+			@RequestParam(value = "firstname", defaultValue = "*") String firstname,
+			@RequestParam(value = "lastname", defaultValue = "*") String lastname,
+			@RequestParam(value = "email", defaultValue = "*") String email,
+			@RequestParam(value = "street", defaultValue = "*") String street,
+			@RequestParam(value = "city", defaultValue = "*") String city,
+			@RequestParam(value = "state", defaultValue = "*") String state,
+			@RequestParam(value = "country", defaultValue = "*") String country) {
+		return new ResponseEntity<List<CustomerDTO>>(
+				customerService.getAllCustomers(firstname, lastname, email, street, city, state, country),
+				HttpStatus.OK);
 	}
-	
-	
-	@GetMapping(path="/{id}")
-	public ResponseEntity<CustomerDTO> getCustomer(@PathVariable String id) {		
+
+	@GetMapping(path = "/{id}")
+	public ResponseEntity<CustomerDTO> getCustomer(@PathVariable String id) {
 		return new ResponseEntity<CustomerDTO>(customerService.getCustomerById(id), HttpStatus.OK);
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<CustomerDTO> createCustomer( @Valid @RequestBody CustomerDTO customer) throws Exception
-	{
-		CustomerDTO customerDTO= customerService.addCustomer(customer);	
+	public ResponseEntity<CustomerDTO> createCustomer(@Valid @RequestBody CustomerDTO customer) throws Exception {
+		CustomerDTO customerDTO = customerService.addCustomer(customer);
 		return new ResponseEntity<CustomerDTO>(customerDTO, HttpStatus.CREATED);
 	}
-	
+
 	@DeleteMapping(path = "/{id}")
-	public ResponseEntity<Void> deleteCustomer(@PathVariable String id)
-	{
+	public ResponseEntity<Void> deleteCustomer(@PathVariable String id) {
 		customerService.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}

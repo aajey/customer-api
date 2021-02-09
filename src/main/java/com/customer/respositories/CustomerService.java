@@ -25,10 +25,10 @@ public class CustomerService {
 	
 	public List<CustomerDTO> getAllCustomers(String firstname, String lastname, String email, String street, String city, String state, String country)
 	{
-		List<CustomerDocument> customers = new ArrayList<>();
-		
-		
-		customerRepository.findByFirstnameAndLastnameAndEmailAndAddressStreetAndAddressCityAndAddressStateAndAddressCountry(firstname, lastname, email, street, city, state, country).forEach(customers::add);
+		List<CustomerDocument> customers = new ArrayList<>();	
+		customerRepository
+		.findByFirstnameAndLastnameAndEmailAndAddressStreetAndAddressCityAndAddressStateAndAddressCountry(firstname, lastname, email, street, city, state, country)
+		.forEach(customers::add);
 		return customers.stream().map(c ->convertToUserModel(c)).collect(Collectors.toList());	
 	}
 
@@ -47,8 +47,12 @@ public class CustomerService {
 		else
 		{
 			return null;
-		}
-		
+		}		
+	}
+	
+	public void deleteById(String id)
+	{
+		customerRepository.deleteById(id);		
 	}
 	
 	private CustomerDTO convertToUserModel(CustomerDocument c)
@@ -57,8 +61,7 @@ public class CustomerService {
 	}
 	
 	private CustomerDocument convertToSolrModel(CustomerDTO c)
-	{		
-		
+	{	
 		CustomerDocument customer = modelMapper.map(c, CustomerDocument.class);
 		customer.setId(UUID.randomUUID().toString());		
 		return customer;

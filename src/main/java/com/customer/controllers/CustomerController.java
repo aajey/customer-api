@@ -50,9 +50,7 @@ public class CustomerController {
 	
 	@PostMapping
 	public ResponseEntity<CustomerDTO> createCustomer( @Valid @RequestBody CustomerDTO customer) throws Exception
-	{	
-		if(customer.getFirstname()==null)
-			throw new Exception("testing");
+	{
 		customerService.addCustomer(customer);	
 		return new ResponseEntity<CustomerDTO>(customer, HttpStatus.OK);
 	}
@@ -60,7 +58,7 @@ public class CustomerController {
 	@DeleteMapping(path = "/{id}")
 	public void deleteCustomer(@RequestBody String customerId)
 	{
-		//customers.remove(customerId);
+		customerService.deleteById(customerId);
 	}
 
 }

@@ -15,7 +15,9 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.data:spring-data-solr'
+	compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.9'	
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}

@@ -21,6 +21,15 @@ are given below:
 * Package: `./gradlew --info clean build`
 * Run: `./gradlew --info bootRun` - runs the application on port 8080 of the local machine.
 
+=== Solr Config
+The solr endpoint is currently set to http://localhost:8983/solr in application properties file. Change it according to your cluster. 
+
+=== Solr Preparation
+The above project assumes the collection/core is created for customers in SOLR. Please run below instruction for creating solr core.
+
+`bin/solr create -c customers`
+
+
 === Credit
 
 This stub application was based on a stub app included in SpringBoot's Hello World tutorial [here[(https://spring.io/guides/gs/spring-boot/)
